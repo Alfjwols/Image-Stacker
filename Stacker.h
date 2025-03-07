@@ -63,6 +63,7 @@ class Stacker{
   int width;
   int height;
   int max_color;
+  int timesStacked;
   std::vector<std::vector<Pixel>> pixels;
 };
 

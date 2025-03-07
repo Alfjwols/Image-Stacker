@@ -21,6 +21,10 @@ Pixel::Pixel(int r, int g, int b){
   blue = b;
 }
 
+Pixel::~Pixel(){
+
+}
+
 int Pixel::getRed(){
   return red;
 }
