@@ -21,7 +21,8 @@ Stacker::Stacker(){
   magic_number = "";
   width = 0;
   height = 0;
-}
+  timesStacked = 1;
+}  
 
 Stacker::~Stacker(){
   pixels.clear();
@@ -32,6 +33,11 @@ void Stacker::ReadImage(string Path){
   ifstream file;
   file.open(Path, std::ios::in);
 
+  if (!file){
+    cout << "File failed to open" << endl;
+    return;
+  }
+  
   string temp;
 
   file >> temp;
@@ -49,7 +55,7 @@ void Stacker::ReadImage(string Path){
   // check if pixels needs to be wider
   if ( width < stoi(temp) ){
     cout << "Image was wider than Stacker" << endl << "| "<< Path << endl;
-
+    
     for ( int i = width; i < stoi(temp); i++){ // expanding width
       pixels.push_back(vector<Pixel>()); // adding new collum
       for (int j = 0; j < height; j++){
@@ -82,27 +88,34 @@ void Stacker::ReadImage(string Path){
   file >> temp;
   max_color = stoi(temp);
 
+  
   for(int i = 0; i < width; i++){
     for(int j = 0; j < height; j++){
 
       Pixel p = Pixel();
 
       int r, g, b;
-
+      
       file >> r >> g >> b;
 
-      p = Pixel(r,g,b);
-
-      if( pixels[i][j].getRed() == -1){ //assumes if red is initialized, green and blue are
-	pixels[i][j] = p;
+      
+      
+      if( pixels[i][j].getRed() == -1){ //assumes if red is initialized, green and blue are 
+	pixels[i][j] = Pixel(r,g,b);
       }
       else{
-	pixels[i][j] = pixels[i][j].avgOf(p);
+	r = ((pixels[i][j].getRed() * timesStacked) + r)/(timesStacked + 1);
+	g = ((pixels[i][j].getGreen() * timesStacked) + g)/(timesStacked + 1);
+	b = ((pixels[i][j].getBlue() * timesStacked) + b)/(timesStacked + 1);
+	Pixel p = Pixel(r,g,b);
+	pixels[i][j] = p;
+	
       }
-
     }
+    
   }
-
+  timesStacked++;
+  
   file.close();
 }
 
@@ -114,11 +127,12 @@ void Stacker::printStack(string Path){
   file << max_color << endl;
 
   // width on the inside because we go left-to-right not top-to-bottom
-  for(int j = 0; j < height; j++){
-    for(int i = 0; i < width; i++){
+  for(int i = 0; i < width; i++){
+    for(int j = 0; j < height; j++){
       file << setw(3) << pixels[i][j].getRed() << " "
 	   << setw(3) << pixels[i][j].getGreen() << " "
-	   << setw(3) << pixels[i][j].getBlue() << " ";
+	   << setw(3) << pixels[i][j].getBlue() << " "
+	   << setw(3) << " ";
     }
   }
 
