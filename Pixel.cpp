@@ -39,7 +39,7 @@ Pixel Pixel::avgOf(Pixel pix){
   g = (green + pix.getGreen())/2;
   b = (blue + pix.getGreen())/2;
 
-  Pixel p = new Pixel(r,g,b);
+  Pixel p = Pixel(r,g,b);
   
   return p;
 }

@@ -7,12 +7,14 @@
  * Definition of Stacker class
  */
 
-#include <Vector>
+#include <vector>
+#include <string>
+#include "Pixel.h"
 
-#indef STACKER_H
+#ifndef STACKER_H
 #define STACKER_H
 
-class Stacker(){
+class Stacker{
  public:
   
 
@@ -42,23 +44,26 @@ class Stacker(){
  * @post pixels has been changed to contain an average of the old and new images
  * 
  */
-  void Readimage(string Path);
+  void ReadImage(std::string Path);
 
 
 /**
  * Creates a .ppm file that represents the current image stack
  *
+ * @param string Path the path & filename to save image to (will append .ppm if not present)
  * @pre pixels is initialized. all Pixel objects in pixels are initialized
  * @return void 
  * @post a .ppm file is created in this directory
  * 
  */
-  void printStack();
+  void printStack(std::string Path);
     
  private:
-  string magic_number;
+  std::string magic_number;
   int width;
   int height;
   int max_color;
   std::vector<std::vector<Pixel>> pixels;
-}
+};
+
+#endif

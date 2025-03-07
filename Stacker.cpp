@@ -8,26 +8,29 @@
  */
 
 #include "Stacker.h"
-#include "Vector"
+#include <vector>
+#include <string>
 #include <fstream>
+#include <iostream>
+#include <iomanip>
 
 using namespace std;
 
 Stacker::Stacker(){
   pixels = vector<vector<Pixel>>();
-  magicNumber = "";
+  magic_number = "";
   width = 0;
   height = 0;
 }  
 
 Stacker::~Stacker(){
-  delete pixels;
+  pixels.clear();
 }
 
 void Stacker::ReadImage(string Path){
 
   ifstream file;
-  file.open(Path, in);
+  file.open(Path, std::ios::in);
 
   string temp;
 
@@ -38,7 +41,7 @@ void Stacker::ReadImage(string Path){
   }
   else if ( magic_number != temp){
     cout << "Error: Magic Number does not match for " << Path << endl;
-    continue;
+    return;
   }
 
   file >> temp;
@@ -60,12 +63,13 @@ void Stacker::ReadImage(string Path){
   }
 
   file >> temp;
-  
+
+  // check if pixels needs to be taller
   if ( height < stoi(temp) ){
     cout << "Image is taller than Stacker" << endl << "| " << Path << endl;
-    for (int i = 0; i < width; i++){
+    for (int i = 0; i < width; i++){ // don't need to add new rows (just cycling)
       for (int j = height; j < stoi(temp); j++){
-	pixels[i].pushback(Pixel());
+	pixels[i].push_back(Pixel()); // adding element to collum
       }
     }
     height = stoi(temp);
@@ -74,25 +78,26 @@ void Stacker::ReadImage(string Path){
     cout << "Stacker is taller than Image" << endl << "| " << Path << endl;
   }
 
+  // set max_color
+  file >> temp;
+  max_color = stoi(temp);
+  
   for(int i = 0; i < width; i++){
     for(int j = 0; j < height; j++){
 
       Pixel p = Pixel();
 
-      file >> temp;
-      p.red = temp;
+      int r, g, b;
       
-      file >> temp;
-      p.green = temp;
+      file >> r >> g >> b;
 
-      file >> temp;
-      p.blue = temp;
-
-      if( pixels[i][j].red == -1){ //assumes if red is initialized, green and blue are too
+      p = Pixel(r,g,b);
+      
+	if( pixels[i][j].getRed() == -1){ //assumes if red is initialized, green and blue are 
 	pixels[i][j] = p;
       }
       else{
-	pixels[i][j] = pixels.avgOf(p);
+	pixels[i][j] = pixels[i][j].avgOf(p);
       }
       
     }
@@ -101,6 +106,21 @@ void Stacker::ReadImage(string Path){
   file.close();
 }
 
-void printStack(){
-  
+void Stacker::printStack(string Path){
+  ofstream file(Path);
+
+  file << magic_number << endl;
+  file << width << " " << height << endl;
+  file << max_color << endl;
+
+  // width on the inside because we go left-to-right not top-to-bottom
+  for(int j = 0; j < height; j++){
+    for(int i = 0; i < width; i++){
+      file << setw(3) << pixels[i][j].getRed() << " "
+	   << setw(3) << pixels[i][j].getGreen() << " "
+	   << setw(3) << pixels[i][j].getBlue() << " ";
+    }
+  }
+
+  file.close();
 }

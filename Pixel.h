@@ -8,10 +8,10 @@
  */
 
 
-#indef PIXEL_H
+#ifndef PIXEL_H
 #define PIXEL_H
 
-class Pixel(){
+class Pixel{
  public:
 
 /**
@@ -87,6 +87,6 @@ class Pixel(){
   int green;
   
   int blue;
-}
+};
 
 #endif
