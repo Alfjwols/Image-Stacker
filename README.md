@@ -32,8 +32,16 @@ The PPM Image Stacker project is designed to reduce noise in astronomical images
    Ensure you have g++ installed. From the project's root directory, run: make
    This command compiles all source files and produces the executable (e.g., `stacker`).
 
-2. **Run the Program:**
-Execute the program by typing: ./stacker
+2. **Move Images**
+   Move your folder of images into the same directory as 'stacker'
+   ensure that the naming scheme of the folder and images is as follows:
+   	name/name_###.ppm
+   	### should start at 001 and make sure not to skip a number
+
+4. **Run the Program:**
+   Execute the program by typing: ./stacker
+   Enter the name of the folder/image you want to stack
+   enter in a number 1-n for the images you want to use
 
 
 ## Challenges and Solutions
