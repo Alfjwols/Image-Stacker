@@ -36,7 +36,7 @@ The PPM Image Stacker project is designed to reduce noise in astronomical images
    Move your folder of images into the same directory as 'stacker'
    ensure that the naming scheme of the folder and images is as follows:
    	name/name_###.ppm
-   	### should start at 001 and make sure not to skip a number
+   	'###' should start at 001 and make sure not to skip a number
 
 4. **Run the Program:**
    Execute the program by typing: ./stacker
